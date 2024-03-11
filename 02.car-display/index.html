@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자동차 360도 회전</title>
+  <link rel="stylesheet" href="../css/ui-style.css">
+</head>
+<body>
+  <div class="contents">
+    <div class="tab">
+      <!-- preview -->
+      <div class="tab__cont" style="background-image:url('./images/3D_L.jpg')">
+        <span class="blind">이미지 미리보기</span>
+      </div>
+      <!-- //preview -->
+
+      <!-- buttons -->
+      <div class="tab__list">
+        <div class="tab__item">
+          <button type="button" class="tab__button" data-image="3D_L">
+            <img src="../images/icon01.png" alt="">
+          </button>
+        </div>
+        <div class="tab__item">
+          <button type="button" class="tab__button" data-image="ABP_L">
+            <img src="../images/icon02.png" alt="">
+          </button>
+        </div>
+        <div class="tab__item">
+          <button type="button" class="tab__button" data-image="C3S_L">
+            <img src="../images/icon03.png" alt="">
+          </button>
+        </div>
+        <div class="tab__item">
+          <button type="button" class="tab__button" data-image="SWP_L">
+            <img src="../images/icon04.png" alt="">
+          </button>
+        </div>
+      </div>
+      <!-- //buttons -->
+    </div>
+  </div>
+  <script>
+    const dragSection = document.querySelector('.tab__cont');
+    let currentPositon= 0;
+    const dragNum= 0;
+    const resultPosition = 0;
+
+    currentPositon = getComputedStyle(dragSection).getPropertyValue('background-position');
+    console.log(currentPositon);
+  </script>
+</body>
+</html>
