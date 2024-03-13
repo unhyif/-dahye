@@ -44,22 +44,36 @@
   <script>    
     // Drag Event [S]
     const dragSection = document.querySelector('.tab__cont');
+    let currentDrag;
+    let currentImgPosition;
+    let currentImgPositionX;
+    let currentImgPositionY;
     
     dragSection.addEventListener("mousedown", function(event){
-      let currentDrag = event.clientX;
-      console.log('currentDrag : ' + currentDrag);
+      currentDrag = event.clientX;
+      let currentImgPositionX = getComputedStyle(dragSection).backgroundPositionX;
+      let currentImgPositionY = getComputedStyle(dragSection).backgroundPositionY;
 
-      // 움직인 드래그 수치
-      dragSection.onmousemove = (event) => {
+      console.log(currentImgPositionX , currentImgPositionY);
+    });
+
+    dragSection.addEventListener("mousemove", function(event){
         if(event.buttons == 1) {
           event.preventDefault();
           let dragMove = event.clientX;
-          let lastMove = parseInt(dragMove - currentDrag);
-          
-          console.log(lastMove);
+          let lastMove = dragMove - currentDrag;
+
+          if(lastMove > 0){
+            // console.log(lastMove);
+            console.log('양수 : 오른쪽 방향 ' + -(Math.ceil(lastMove/960)*960 + currentDrag));
+            dragSection.style.backgroundPositionX = -(Math.ceil(lastMove/960)*960 + currentDrag) + 'px';
+          }
+          // else{
+          //   console.log('음수 : 왼쪽 방향 ' + Math.round(lastMove/960)*960);
+          //   dragSection.style.backgroundPositionX = Math.round(lastMove/960)*960 + currentDrag + 'px';
+          // }
         }
-      };
-    });
+      });
     // Drag Event [E]
 
     // Tab Event [S]

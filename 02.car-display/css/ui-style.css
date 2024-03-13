@@ -34,7 +34,7 @@ html,body{
   display: block;
   width: 960px;
   height: 540px;
-  background-position: -960px 0;
+  background-position: 0 0;
   background-repeat: no-repeat;
   box-sizing:border-box;
 }
