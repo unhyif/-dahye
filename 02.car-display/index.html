@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>자동차 360도 회전</title>
-  <link rel="stylesheet" href="../css/ui-style.css">
+  <link rel="stylesheet" href="./css/ui-style.css">
 </head>
 <body>
   <div class="contents">
@@ -18,37 +18,70 @@
       <!-- buttons -->
       <div class="tab__list">
         <div class="tab__item">
-          <button type="button" class="tab__button" data-image="3D_L">
-            <img src="../images/icon01.png" alt="">
+          <button type="button" class="tab__button is-active" data-image="3D_L">
+            <img src="./images/icon01.png" alt="">
           </button>
         </div>
         <div class="tab__item">
           <button type="button" class="tab__button" data-image="ABP_L">
-            <img src="../images/icon02.png" alt="">
+            <img src="./images/icon02.png" alt="">
           </button>
         </div>
         <div class="tab__item">
           <button type="button" class="tab__button" data-image="C3S_L">
-            <img src="../images/icon03.png" alt="">
+            <img src="./images/icon03.png" alt="">
           </button>
         </div>
         <div class="tab__item">
           <button type="button" class="tab__button" data-image="SWP_L">
-            <img src="../images/icon04.png" alt="">
+            <img src="./images/icon04.png" alt="">
           </button>
         </div>
       </div>
       <!-- //buttons -->
     </div>
   </div>
-  <script>
+  <script>    
+    // Drag Event [S]
     const dragSection = document.querySelector('.tab__cont');
-    let currentPositon= 0;
-    const dragNum= 0;
-    const resultPosition = 0;
+    
+    dragSection.addEventListener("mousedown", function(event){
+      let currentDrag = event.clientX;
+      console.log('currentDrag : ' + currentDrag);
 
-    currentPositon = getComputedStyle(dragSection).getPropertyValue('background-position');
-    console.log(currentPositon);
+      // 움직인 드래그 수치
+      dragSection.onmousemove = (event) => {
+        if(event.buttons == 1) {
+          event.preventDefault();
+          let dragMove = event.clientX;
+          let lastMove = parseInt(dragMove - currentDrag);
+          
+          console.log(lastMove);
+        }
+      };
+    });
+    // Drag Event [E]
+
+    // Tab Event [S]
+    const tabButtons = document.querySelectorAll('[data-image]');
+    const tabContents = document.querySelector('.tab__cont');
+
+    tabButtons.forEach(function(button){
+      button.addEventListener('click', function(){
+        const activeButton = document.querySelector('.is-active');
+        let dataImage = this.getAttribute('data-image');
+
+        // 이 전에 활성화된 버튼이 있는 경우, is-active 클래스 제거
+        if(activeButton){
+          activeButton.classList.remove('is-active');
+          this.classList.add('is-active');
+        }
+
+        // 버튼에 맞는 data-image 속성을 가져와서, image 경로로 대치
+        tabContents.style.backgroundImage= "url('./images/" + dataImage + ".jpg')";
+      });
+    });
+     // Tab Event [E]
   </script>
 </body>
 </html>
