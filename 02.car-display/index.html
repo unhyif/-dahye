@@ -41,39 +41,55 @@
       <!-- //buttons -->
     </div>
   </div>
-  <script>    
+  <script>
     // Drag Event [S]
     const dragSection = document.querySelector('.tab__cont');
-    let currentDrag;
-    let currentImgPosition;
+    let isDragging = false;
+    let initialMouseX;
     let currentImgPositionX;
     let currentImgPositionY;
-    
-    dragSection.addEventListener("mousedown", function(event){
-      currentDrag = event.clientX;
-      let currentImgPositionX = getComputedStyle(dragSection).backgroundPositionX;
-      let currentImgPositionY = getComputedStyle(dragSection).backgroundPositionY;
-
-      console.log(currentImgPositionX , currentImgPositionY);
+    dragSection.addEventListener("mousedown", function(event) {
+      isDragging = true;
+      initialMouseX = event.clientX;
+      currentImgPositionX = parseInt(getComputedStyle(dragSection).backgroundPositionX) || 0;
+      currentImgPositionY = parseInt(getComputedStyle(dragSection).backgroundPositionY) || 0;
     });
-
-    dragSection.addEventListener("mousemove", function(event){
-        if(event.buttons == 1) {
-          event.preventDefault();
-          let dragMove = event.clientX;
-          let lastMove = dragMove - currentDrag;
-
-          if(lastMove > 0){
-            // console.log(lastMove);
-            console.log('양수 : 오른쪽 방향 ' + -(Math.ceil(lastMove/960)*960 + currentDrag));
-            dragSection.style.backgroundPositionX = -(Math.ceil(lastMove/960)*960 + currentDrag) + 'px';
+    dragSection.addEventListener("mousemove", function(e) {
+      if (isDragging) {
+        e.preventDefault();
+        dragSection.style.cursor = "grabbing"
+        const mouseX = e.clientX;
+        const mouseMove = mouseX - initialMouseX;
+        let newPositionX;
+        let newPositionY = currentImgPositionY;
+        // 마우스 이동 방향이 양수면, 오른쪽
+        if (mouseMove > 0) {
+          newPositionX = currentImgPositionX + Math.ceil(Math.abs(mouseMove) / 960) * 960;
+          if(newPositionX > 0){
+            newPositionX = -4800;
+            newPositionY += 540;
+            if(newPositionY > 0){
+              newPositionY = -2700;
+            }
           }
-          // else{
-          //   console.log('음수 : 왼쪽 방향 ' + Math.round(lastMove/960)*960);
-          //   dragSection.style.backgroundPositionX = Math.round(lastMove/960)*960 + currentDrag + 'px';
-          // }
+        // 마우스 이동 방향이 음수면, 왼쪽
+        } else {
+          newPositionX = currentImgPositionX - Math.ceil(Math.abs(mouseMove) / 960) * 960;
+          if(newPositionX < -4800){
+            newPositionX = 0;
+            newPositionY -= 540;
+            if(newPositionY < -2700){
+              newPositionY = 0;
+            }
+          }
         }
-      });
+        dragSection.style.backgroundPositionX = newPositionX + 'px';
+        dragSection.style.backgroundPositionY = newPositionY + 'px';
+      }
+    });
+    dragSection.addEventListener("mouseup", function(event) {
+      isDragging = false;
+    });
     // Drag Event [E]
 
     // Tab Event [S]
