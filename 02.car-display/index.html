@@ -1,117 +1,138 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>자동차 360도 회전</title>
-  <link rel="stylesheet" href="./css/ui-style.css">
-</head>
-<body>
-  <div class="contents">
-    <div class="tab">
-      <!-- preview -->
-      <div class="tab__cont" style="background-image:url('./images/3D_L.jpg')">
-        <span class="blind">이미지 미리보기</span>
-      </div>
-      <!-- //preview -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자동차 360도 회전</title>
+    <link rel="stylesheet" href="./css/ui-style.css" />
+  </head>
+  <body>
+    <div class="contents">
+      <div class="tab">
+        <!-- preview -->
+        <div
+          class="tab__cont"
+          style="background-image: url('./images/3D_L.jpg')"
+        >
+          <span class="blind">이미지 미리보기</span>
+        </div>
+        <!-- //preview -->
 
-      <!-- buttons -->
-      <div class="tab__list">
-        <div class="tab__item">
-          <button type="button" class="tab__button is-active" data-image="3D_L">
-            <img src="./images/icon01.png" alt="">
-          </button>
+        <!-- buttons -->
+        <div class="tab__list">
+          <div class="tab__item">
+            <button
+              type="button"
+              class="tab__button is-active"
+              data-image="3D_L"
+            >
+              <img src="./images/icon01.png" alt="" />
+            </button>
+          </div>
+          <div class="tab__item">
+            <button type="button" class="tab__button" data-image="ABP_L">
+              <img src="./images/icon02.png" alt="" />
+            </button>
+          </div>
+          <div class="tab__item">
+            <button type="button" class="tab__button" data-image="C3S_L">
+              <img src="./images/icon03.png" alt="" />
+            </button>
+          </div>
+          <div class="tab__item">
+            <button type="button" class="tab__button" data-image="SWP_L">
+              <img src="./images/icon04.png" alt="" />
+            </button>
+          </div>
         </div>
-        <div class="tab__item">
-          <button type="button" class="tab__button" data-image="ABP_L">
-            <img src="./images/icon02.png" alt="">
-          </button>
-        </div>
-        <div class="tab__item">
-          <button type="button" class="tab__button" data-image="C3S_L">
-            <img src="./images/icon03.png" alt="">
-          </button>
-        </div>
-        <div class="tab__item">
-          <button type="button" class="tab__button" data-image="SWP_L">
-            <img src="./images/icon04.png" alt="">
-          </button>
-        </div>
+        <!-- //buttons -->
       </div>
-      <!-- //buttons -->
     </div>
-  </div>
-  <script>
-    // Drag Event [S]
-    const dragSection = document.querySelector('.tab__cont');
-    let isDragging = false;
-    let initialMouseX;
-    let currentImgPositionX;
-    let currentImgPositionY;
-    dragSection.addEventListener("mousedown", function(event) {
-      isDragging = true;
-      initialMouseX = event.clientX;
-      currentImgPositionX = parseInt(getComputedStyle(dragSection).backgroundPositionX) || 0;
-      currentImgPositionY = parseInt(getComputedStyle(dragSection).backgroundPositionY) || 0;
-    });
-    dragSection.addEventListener("mousemove", function(e) {
-      if (isDragging) {
-        e.preventDefault();
-        dragSection.style.cursor = "grabbing"
-        const mouseX = e.clientX;
-        const mouseMove = mouseX - initialMouseX;
-        let newPositionX;
-        let newPositionY = currentImgPositionY;
-        // 마우스 이동 방향이 양수면, 오른쪽
-        if (mouseMove > 0) {
-          newPositionX = currentImgPositionX + Math.ceil(Math.abs(mouseMove) / 960) * 960;
-          if(newPositionX > 0){
-            newPositionX = -4800;
-            newPositionY += 540;
-            if(newPositionY > 0){
-              newPositionY = -2700;
-            }
-          }
-        // 마우스 이동 방향이 음수면, 왼쪽
-        } else {
-          newPositionX = currentImgPositionX - Math.ceil(Math.abs(mouseMove) / 960) * 960;
-          if(newPositionX < -4800){
-            newPositionX = 0;
-            newPositionY -= 540;
-            if(newPositionY < -2700){
-              newPositionY = 0;
-            }
-          }
-        }
-        dragSection.style.backgroundPositionX = newPositionX + 'px';
-        dragSection.style.backgroundPositionY = newPositionY + 'px';
-      }
-    });
-    dragSection.addEventListener("mouseup", function(event) {
-      isDragging = false;
-    });
-    // Drag Event [E]
+    <script>
+      // Drag Event [S]
+      const dragSection = document.querySelector(".tab__cont");
+      let isDragging = false;
+      let initialMouseX;
+      let currentImgPositionX;
+      let currentImgPositionY;
+      const IMAGE_WIDTH = 960;
+      const IMAGE_HEIGHT = 540;
 
-    // Tab Event [S]
-    const tabButtons = document.querySelectorAll('[data-image]');
-    const tabContents = document.querySelector('.tab__cont');
-
-    tabButtons.forEach(function(button){
-      button.addEventListener('click', function(){
-        const activeButton = document.querySelector('.is-active');
-        let dataImage = this.getAttribute('data-image');
-
-        // 이 전에 활성화된 버튼이 있는 경우, is-active 클래스 제거
-        if(activeButton){
-          activeButton.classList.remove('is-active');
-          this.classList.add('is-active');
-        }
-
-        // 버튼에 맞는 data-image 속성을 가져와서, image 경로로 대치
-        tabContents.style.backgroundImage= "url('./images/" + dataImage + ".jpg')";
+      dragSection.addEventListener("mousedown", function (event) {
+        isDragging = true;
+        initialMouseX = event.clientX;
+        currentImgPositionX =
+          parseInt(getComputedStyle(dragSection).backgroundPositionX) || 0;
+        currentImgPositionY =
+          parseInt(getComputedStyle(dragSection).backgroundPositionY) || 0;
       });
-    });
-     // Tab Event [E]
-  </script>
-</body>
+      dragSection.addEventListener("mousemove", function (e) {
+        if (isDragging) {
+          e.preventDefault();
+          dragSection.style.cursor = "grabbing";
+
+          const mouseX = e.clientX;
+          const mouseMove = mouseX - initialMouseX;
+          // 마우스 이동 방향이 양수면, 오른쪽
+          if (mouseMove > 0) {
+            // 현재 맨 왼쪽 이미지일 때
+            if (currentImgPositionX === 0) {
+              if (currentImgPositionY === 0) {
+                currentImgPositionY = -IMAGE_HEIGHT * 5;
+              } else {
+                currentImgPositionY += IMAGE_HEIGHT;
+              }
+              currentImgPositionX = -IMAGE_WIDTH * 5;
+              return;
+            }
+
+            currentImgPositionX += IMAGE_WIDTH;
+
+            // 마우스 이동 방향이 음수면, 왼쪽
+          } else {
+            // 현재 맨 오른쪽 이미지일 때
+            if (currentImgPositionX === -IMAGE_WIDTH * 5) {
+              currentImgPositionX = 0;
+              currentImgPositionY -= IMAGE_HEIGHT;
+              if (currentImgPositionY === -IMAGE_HEIGHT * 6) {
+                currentImgPositionY = 0;
+              }
+              return;
+            }
+
+            currentImgPositionX -= IMAGE_WIDTH;
+          }
+
+          dragSection.style.backgroundPositionX = currentImgPositionX + "px";
+          dragSection.style.backgroundPositionY = currentImgPositionY + "px";
+        }
+      });
+      dragSection.addEventListener("mouseup", function (event) {
+        isDragging = false;
+      });
+      // Drag Event [E]
+
+      // Tab Event [S]
+      const tabButtons = document.querySelectorAll("[data-image]");
+      const tabContents = document.querySelector(".tab__cont");
+
+      tabButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          const activeButton = document.querySelector(".is-active");
+          let dataImage = this.getAttribute("data-image");
+
+          // 이 전에 활성화된 버튼이 있는 경우, is-active 클래스 제거
+          if (activeButton) {
+            activeButton.classList.remove("is-active");
+            this.classList.add("is-active");
+          }
+
+          // 버튼에 맞는 data-image 속성을 가져와서, image 경로로 대치
+          tabContents.style.backgroundImage =
+            "url('./images/" + dataImage + ".jpg')";
+        });
+      });
+      // Tab Event [E]
+    </script>
+  </body>
 </html>
